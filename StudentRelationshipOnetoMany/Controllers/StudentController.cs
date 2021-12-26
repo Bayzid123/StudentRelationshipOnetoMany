@@ -23,6 +23,18 @@ namespace StudentRelationshipOnetoMany.Controllers
                 .ToListAsync();
             return Ok(students);
         }
+        [HttpGet("get by id")]
+        public async Task<ActionResult<List<Student>>> GetbyID(int id)
+        {
+            var data = await _context.Students.FindAsync(id);
+            if (data == null)
+                return BadRequest("id not found");
+            return Ok(data);
+        }
+
+
+
+
         [HttpPost("Student Table Post")]
         public async Task<ActionResult<List<Student>>> CreateStudent(StudentDto student)
         {
@@ -49,6 +61,33 @@ namespace StudentRelationshipOnetoMany.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(newGrade);
+        }
+
+        [HttpPut("update Student")]
+
+        public async Task<ActionResult<List<Student>>> UpdateStudent(StudentUpdateDto student)
+        {
+            var dbstudent = await _context.Students.FindAsync(student.Id);
+            if (dbstudent == null)
+                return BadRequest("Student not found");
+
+            dbstudent.Name= student.Name;
+            dbstudent.Id= student.Id;
+            dbstudent.CurrentGradeId= student.CurrentGradeId;
+
+            await _context.SaveChangesAsync();
+            return Ok(await _context.Students.ToListAsync());
+        }
+
+        [HttpDelete("delete by id")]
+        public async Task<ActionResult<List<Student>>> DeleteStudent(int id)
+        {
+            var data = await _context.Students.FindAsync(id);
+            if (data == null)
+                return BadRequest("id not found");
+            _context.Students.Remove(data);
+            await _context.SaveChangesAsync();
+            return Ok(await _context.Students.ToListAsync());
         }
     }
 }

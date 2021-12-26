@@ -16,6 +16,12 @@ namespace StudentRelationshipOnetoMany.Data
                 .HasOne<Grade>(s => s.Grade)
                 .WithMany(g => g.Students)
                 .HasForeignKey(s => s.CurrentGradeId);
+
+            modelBuilder.Entity<Student>()
+                .Ignore(s => s.Grade);
+
+            modelBuilder.Entity<Grade>()
+                .Ignore(a => a.Students);
         }
 
         public DbSet<Grade> Grades { get; set; }

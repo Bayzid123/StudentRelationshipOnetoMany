@@ -1,4 +1,6 @@
-﻿namespace StudentRelationshipOnetoMany.Models
+﻿using System.Text.Json.Serialization;
+
+namespace StudentRelationshipOnetoMany.Models
 {
     public class Grade
     {
@@ -6,6 +8,7 @@
         public string GradeName { get; set; }
         public string Section { get; set; }
 
+        [JsonIgnore]
         public ICollection<Student> Students { get; set; }
     }
 }
